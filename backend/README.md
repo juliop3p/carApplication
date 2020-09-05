@@ -21,7 +21,7 @@ public String show(@PathVariable("id") Long id) {}
 ```
 
 ## Database Connection
-````
+```
 # MySQL
 spring.datasource.url=jdbc:mysql://localhost:3306/spring?useSSL=false&allowPublicKeyRetrieval=true
 spring.datasource.username=julio
