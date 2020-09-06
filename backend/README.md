@@ -72,5 +72,3 @@ private Long id;
 		return carro.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 ```
-=======
->>>>>>> a9f0c0a29461bfa0fc0f5da5523ce1a87fdbb4f5
