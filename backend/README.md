@@ -21,7 +21,7 @@ public String show(@PathVariable("id") Long id) {}
 ```
 
 ## Database Connection
-````
+```
 # MySQL
 spring.datasource.url=jdbc:mysql://localhost:3306/spring?useSSL=false&allowPublicKeyRetrieval=true
 spring.datasource.username=julio
@@ -51,6 +51,7 @@ logging.level.org.hibernate.SQL=debug
 @GeneratedValue(strategy = GenerationType.AUTO)
 private Long id;
 ```
+<<<<<<< HEAD
 
 ## Métodos de retorno de dados
 
@@ -71,3 +72,5 @@ private Long id;
 		return carro.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 ```
+=======
+>>>>>>> a9f0c0a29461bfa0fc0f5da5523ce1a87fdbb4f5
