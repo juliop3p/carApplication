@@ -51,3 +51,23 @@ logging.level.org.hibernate.SQL=debug
 @GeneratedValue(strategy = GenerationType.AUTO)
 private Long id;
 ```
+
+## Métodos de retorno de dados
+
+```
+// Easiest		
+		if(carro.isPresent()) {
+			return ResponseEntity.ok(carro.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+		
+		// Ternary	
+		return carro.isPresent() ?
+				ResponseEntity.ok(carro.get()) :
+				ResponseEntity.notFound().build();
+		
+		// Lambda		
+		return carro.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
+```
