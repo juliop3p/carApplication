@@ -51,7 +51,6 @@ logging.level.org.hibernate.SQL=debug
 @GeneratedValue(strategy = GenerationType.AUTO)
 private Long id;
 ```
-<<<<<<< HEAD
 
 ## Métodos de retorno de dados
 

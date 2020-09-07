@@ -3,37 +3,42 @@ package com.carros.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import com.carros.domain.dto.CarroDTO;
 
 @Service
 public class CarroService {
 	@Autowired
 	private CarroRepository rep;
 	
-	public Iterable<Carro> getCarros() {
-		return rep.findAll();
+	public List<CarroDTO> getCarros() {		
+		return rep.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());
 	}
 	
-	public Optional<Carro> getCarroById(Long id) {
-		return rep.findById(id);
+	public Optional<CarroDTO> getCarroById(Long id) {
+		return rep.findById(id).map(CarroDTO::create);
 	}
 	
-	public List<Carro> getCarrosByTipo(String tipo) {
-		return rep.findByTipo(tipo);
+	public List<CarroDTO> getCarrosByTipo(String tipo) {
+		return rep.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
 	}
 	
-	public Carro insert(Carro carro) {
-		return rep.save(carro);
+	public CarroDTO insert(Carro carro) {
+		Assert.isNull(carro.getId(), "Não foi possível inserir o registro");
+		
+		return CarroDTO.create(rep.save(carro));
 	}
 	
-	public Carro update(Carro carro, Long id) {
+	public CarroDTO update(Carro carro, Long id) {
 		Assert.notNull(id, "Não foi possível atualizar o registro");
 		
 		// Busca o carro no banco de dados
-		Optional<Carro> optional = getCarroById(id);
+		Optional<Carro> optional = rep.findById(id);
 		
 		if(optional.isPresent()) {
 			Carro db = optional.get();
@@ -45,18 +50,18 @@ public class CarroService {
 			// Atualiza o carro
 			rep.save(db);
 			
-			return db;
+			return CarroDTO.create(db);
 		} else {
-			throw new RuntimeException("Não foi possível atualizar o registro");
+			return null;
 		}
 	}
 	
-	public void delete(Long id) {
-		Optional<Carro> carro = getCarroById(id);
-		
-		if(carro.isPresent()) {
-			rep.deleteById(id);			
-		}
+	public boolean delete(Long id) {		
+		if(getCarroById(id).isPresent()) {
+			rep.deleteById(id);	
+			return true;
+		} 
+		return false;
 	}
 	
 	public List<Carro> getCarrosFake() {
