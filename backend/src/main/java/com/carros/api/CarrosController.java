@@ -33,34 +33,26 @@ public class CarrosController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<CarroDTO> get(@PathVariable("id") Long id) {
-		Optional<CarroDTO> carro = service.getCarroById(id);
+		CarroDTO carro = service.getCarroById(id);
 				
-		return carro.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
+		return ResponseEntity.ok(carro);
 	}
 	
 	@GetMapping("tipo/{tipo}")
 	public ResponseEntity<List<CarroDTO>> getCarrosByTipo(@PathVariable("tipo") String tipo) {
 		List<CarroDTO> carros = service.getCarrosByTipo(tipo);
 		
-		return carros.isEmpty() ?
-					ResponseEntity.noContent().build() :
-					ResponseEntity.ok(carros);
+		return ResponseEntity.ok(carros);
 		
 	}
 	
 	@PostMapping
 	public ResponseEntity<CarroDTO> post(@RequestBody Carro carro) {		
+		CarroDTO c = service.insert(carro);
 		
-		try {
-			CarroDTO c = service.insert(carro);
-			
-			URI location = getUri(c.getId());
+		URI location = getUri(c.getId());
 
-			return ResponseEntity.created(location).build();
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+		return ResponseEntity.created(location).build();
 	}
 	
 	private URI getUri(Long id) {
@@ -81,10 +73,8 @@ public class CarrosController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CarroDTO> delete(@PathVariable("id") Long id) {
-		boolean ok = service.delete(id);
+		service.delete(id);
 		
-		return ok ?
-				ResponseEntity.ok().build() :
-				ResponseEntity.notFound().build();
+		return ResponseEntity.ok().build();
 	}
 }
